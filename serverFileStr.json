@@ -1,0 +1,82 @@
+{
+    "/syrym/Documents/testFolder/KMn4VEeEPR8.jpg": {
+        "modifDate": "2019-12-18T07:24:05.664Z",
+        "type": "file",
+        "serverUri": "https://unsplash.com/photos/KMn4VEeEPR8/download?force=true"
+    },
+    "/syrym/Documents/testFolder/big_buck_bunny_720p_10mb.mp4": {
+        "modifDate": "2019-12-18T07:37:15.684Z",
+        "type": "file",
+        "serverUri": "https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_10mb.mp4"
+    },
+    "/syrym/Documents/testFolder/clients/guitar07-non-linear-verb.zip": {
+        "modifDate": "2019-12-18T13:24:05.684Z",
+        "type": "file",
+        "serverUri": "https://s3.amazonaws.com/shutterstock-blog/assets/free-music-samples/guitar07-non-linear-verb.zip"
+    },
+    "/syrym/Documents/testFolder/word.doc": {
+        "modifDate": "2019-12-18T07:24:05.664Z",
+        "type": "file",
+        "serverUri": "https://file-examples.com/wp-content/uploads/2017/02/file-sample_100kB.doc"
+    },
+    "/syrym/Documents/testFolder/clients/exel.xml": {
+        "modifDate": "2019-12-18T07:37:15.684Z",
+        "type": "file",
+        "serverUri": "http://www.principlesofeconometrics.com/excel/gold.xls"
+    },
+    "/syrym/Documents/testFolder/clients/guitar0-non-linear-verb.zip": {
+        "modifDate": "2019-12-18T13:24:05.684Z",
+        "type": "file",
+        "serverUri": "https://s3.amazonaws.com/shutterstock-blog/assets/free-music-samples/guitar07-non-linear-verb.zip"
+    },
+    "/syrym/Documents/testFolder/KMn4VEePR8.jpg": {
+        "modifDate": "2019-12-18T07:24:05.664Z",
+        "type": "file",
+        "serverUri": "https://unsplash.com/photos/KMn4VEeEPR8/download?force=true"
+    },
+    "/syrym/Documents/testFolder/clients/gitar07-non-linear-verb.json": {
+        "modifDate": "2019-12-18T13:24:05.684Z",
+        "type": "file",
+        "serverUri": "https://s3.amazonaws.com/shutterstock-blog/assets/free-music-samples/guitar07-non-linear-verb.zip"
+    },
+    "/syrym/Documents/testFolder/KMn4VEeEPR8+.jpg": {
+        "modifDate": "2019-12-18T07:24:05.664Z",
+        "type": "file",
+        "serverUri": "https://unsplash.com/photos/KMn4VEeEPR8/download?force=true"
+    },
+    "/syrym/Documents/testFolder/big_buck_bunny_720p_10mb+.mp4": {
+        "modifDate": "2019-12-18T07:37:15.684Z",
+        "type": "file",
+        "serverUri": "https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_10mb.mp4"
+    },
+    "/syrym/Documents/testFolder/clients/guitar07-non-linear-verb+.zip": {
+        "modifDate": "2019-12-18T13:24:05.684Z",
+        "type": "file",
+        "serverUri": "https://s3.amazonaws.com/shutterstock-blog/assets/free-music-samples/guitar07-non-linear-verb.zip"
+    },
+    "/syrym/Documents/testFolder/word+.doc": {
+        "modifDate": "2019-12-18T07:24:05.664Z",
+        "type": "file",
+        "serverUri": "https://file-examples.com/wp-content/uploads/2017/02/file-sample_100kB.doc"
+    },
+    "/syrym/Documents/testFolder/clients/exel+.xml": {
+        "modifDate": "2019-12-18T07:37:15.684Z",
+        "type": "file",
+        "serverUri": "http://www.principlesofeconometrics.com/excel/gold.xls"
+    },
+    "/syrym/Documents/testFolder/clients/guitar0-non-linear-verb+.zip": {
+        "modifDate": "2019-12-18T13:24:05.684Z",
+        "type": "file",
+        "serverUri": "https://s3.amazonaws.com/shutterstock-blog/assets/free-music-samples/guitar07-non-linear-verb.zip"
+    },
+    "/syrym/Documents/testFolder/KMn4VEePR8+.jpg": {
+        "modifDate": "2019-12-18T07:24:05.664Z",
+        "type": "file",
+        "serverUri": "https://unsplash.com/photos/KMn4VEeEPR8/download?force=true"
+    },
+    "/syrym/Documents/testFolder/clients/gitar07-non-linear-verb+.json": {
+        "modifDate": "2019-12-18T13:24:05.684Z",
+        "type": "file",
+        "serverUri": "https://s3.amazonaws.com/shutterstock-blog/assets/free-music-samples/guitar07-non-linear-verb.zip"
+    }
+}
