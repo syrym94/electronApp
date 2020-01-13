@@ -1,10 +1,10 @@
 const { app, BrowserWindow, ipcMain, dialog, shell, Tray, Menu } = require('electron')
-const server = require('./server')
-const synchronize = require('./synchronize')
-const isOnline = require('./isOnline')
-const createDom = require('./createDom')
-const fileDownload = require('./fileDownload')
-const context = require('./context')
+const server = require('./server/server')
+const synchronize = require('./server/synchronize')
+const isOnline = require('./server/isOnline')
+const createDom = require('./client/createDom')
+const fileDownload = require('./client/fileDownload')
+const context = require('./client/context')
 let win
 const url = require('url')
 const path = require('path')
@@ -17,14 +17,14 @@ async function createWindow() {
         width: 1200,
         height: 600,
         webPreferences: {
-            preload: `${__dirname}/preload.js`,
+            preload: `${__dirname}/client/preload.js`,
             devTools: true
         },
         icon: __dirname + '/assets/zoomia.png'
     })
     win.openDevTools()
     win.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
+        pathname: path.join(__dirname, '/client/index.html'),
         protocol: 'file:',
         slashes: true
     }))
@@ -53,6 +53,6 @@ app.on('ready', () => {
             }
         }
     ])
-    tray.setToolTip('This is my application.')
+    tray.setToolTip('This is Zoomia application.')
     tray.setContextMenu(contextMenu)
 })
