@@ -159,3 +159,112 @@
 //     // }
 //     // await missingFileFetch()
 // return stats
+// <!DOCTYPE html>
+// <html>
+
+// <head>
+//     <meta charset="UTF-8">
+//     <title>Folder</title>
+//     <link rel="stylesheet" type="text/css" href="mystyle.css">
+//     <script>
+//         class MyEmitter extends window.EventEmitter { }
+//         const myEmitter = new MyEmitter();
+//         const menu = new window.remote.Menu
+//         const menuItem = new window.remote.MenuItem({
+//             label: 'ShowInFolder',
+//             click: () => {
+//                 myEmitter.emit('showInFolder')
+//             }
+//         })
+//         const menuItem2 = new window.remote.MenuItem({
+//             label: 'Delete',
+//             click: () => {
+//                 myEmitter.emit('delete')
+//             }
+//         })
+//         menu.append(menuItem)
+//         menu.append(menuItem2)
+//         window.ipcRenderer.send('folderReq')
+//         window.ipcRenderer.on('folderRep', (event, files)=>{
+//             let webContents = window.remote.getCurrentWindow().webContents
+//             console.log(files,'4444444444')
+//             function createDom(files) {
+//                 for (let i = 0; i < files.length; i++) {
+//                     let div = document.createElement('div')
+//                     div.classList.add('container')
+//                     let img = document.createElement('img')
+//                     div.innerText = files[i]
+//                     if (files[i].includes('.')) {
+//                         div.classList.add('file')
+//                     } else {
+//                         div.classList.add('folder')
+//                     }
+//                     div.addEventListener('dblclick', (e) => {
+//                         let elementToOpen = e.toElement.tagName === 'IMG' ? e.toElement.parentNode : e.toElement
+//                         let textCont = e.toElement.textContent ? e.toElement.textContent : e.toElement.parentNode.textContent
+//                         if (elementToOpen.classList.contains('file')) {
+//                             window.ipcRenderer.send('reqFile', textCont)
+//                             console.log(textCont)
+//                         } else {
+//                             window.ipcRenderer.send('openFolder', textCont)
+//                             console.log(textCont)
+//                         }
+//                     })
+//                     div.addEventListener('contextmenu', (e) => {
+//                         e.preventDefault()
+//                         let textCont = e.toElement.textContent ? e.toElement.textContent : e.toElement.parentNode.textContent
+//                         myEmitter.once('showInFolder', () => {
+//                             console.log(e, '987654321')
+//                             window.ipcRenderer.send('context', [textCont, 'showInFolder'])
+//                         })
+//                         myEmitter.once('delete', () => {
+//                             console.log(e, '***************')
+//                             let elementToDelete = e.toElement.tagName === 'IMG' ? e.toElement.parentNode : e.toElement
+//                             elementToDelete.remove()
+//                             window.ipcRenderer.send('context', [textCont, 'delete'])
+//                         })
+//                         menu.popup(remote.getCurrentWindow())
+//                     }, false)
+//                     document.getElementById('files').appendChild(div)
+//                     let ext = files[i].substring(files[i].lastIndexOf('.') + 1)
+//                     if (files[i].includes('.')) {
+//                         img.src = `../assets/${ext}.png`
+//                     } else {
+//                         img.src = `../assets/folder.jpg`
+//                     }
+//                     div.appendChild(img)
+//                 }
+//             }
+//             createDom(files)
+//         })
+//     </script>
+// </head>
+
+// <body id='body'>
+//     <div id="nav">
+//         <button id="backward">backward</button>
+//     </div>
+//     <div id="files">
+//     </div>
+//     <script>
+//         let backward = document.getElementById('backward')
+//         backward.addEventListener('click', e=>{
+//             console.log(window.ipcRenderer)
+//             window.ipcRenderer.send('backward')
+//         })
+//         setInterval(() => {
+//             window.ipcRenderer.send('isOnline')
+//         }, 500)
+//         window.ipcRenderer.on('onlineStatus', (event, isOnline) => {
+//             if (isOnline) {
+//                 document.getElementById('body').classList.add('online')
+//                 document.getElementById('body').classList.remove('notOnline')
+//             } else {
+//                 document.getElementById('body').classList.add('notOnline')
+//                 document.getElementById('body').classList.remove('online')
+//             }
+//         })
+//     </script>
+// </body>
+
+// </html>

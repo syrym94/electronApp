@@ -1,13 +1,9 @@
 const synchronize = async() => {
     const fs = require("fs");
     const https = require('https');
-    const { promisify } = require("util");
-    const copyFile = promisify(fs.copyFile)
     var _ = require('lodash');
     let serverFileStr = require('./serverFileStr.json')
     let localFileStr = {}
-    let compared
-
     function compareObj(obj1, obj2) {
         let obj1Keys = Object.keys(obj1)
         for (let key = 0; key < obj1Keys.length; key++) {
@@ -46,12 +42,12 @@ const synchronize = async() => {
                             recursiveListing(path + '/' + items[i])
                         } else {
                             // console.log(JSON.stringify(stats.mtime), JSON.stringify(serverFileStr[path + '/' + items[i]].modifDate))
-                            // console.log(serverFileStr[path + '/' + items[i]].modifDate === (JSON.stringify(stats.mtime)))
+                            // console.log(items[i],'+++++++++++++++++')
                             if (JSON.stringify(serverFileStr[path.slice(1) + '/' + items[i]].modifDate).localeCompare(JSON.stringify(stats.mtime)) !== 0) {
                                 serverFileStr[path.slice(1) + '/' + items[i]].isEqual = false
                                     // console.log(Date.parse(serverFileStr[path.slice(1) + '/' + items[i]].modifDate), Date.parse(stats.mtime))
                                 if (Date.parse(serverFileStr[path.slice(1) + '/' + items[i]].modifDate) > Date.parse(stats.mtime)) {
-                                    console.log('server is newer', [path.slice(1) + '/' + items[i]])
+                                    // console.log('server is newer', [path.slice(1) + '/' + items[i]])
                                         // downloading from server
                                     const file = fs.createWriteStream(`${(path.slice(1) + '/' + items[i]).lastIndexOf('/') + 1}`);
                                     const request = https.get(serverFileStr[path.slice(1) + '/' + items[i]].serverUri, function(response) {
@@ -66,7 +62,7 @@ const synchronize = async() => {
                                             // console.log(resultOfMerge[entry].serverUri.substring(resultOfMerge[entry].serverUri.lastIndexOf('/') + 1))
                                     });
                                 } else {
-                                    console.log('locale is newer')
+                                    // console.log('locale is newer')
                                         // uploading to server
                                 }
                             } else {

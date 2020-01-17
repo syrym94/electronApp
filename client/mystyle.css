@@ -30,7 +30,7 @@ body {
     grid-template-columns: 150px 150px 150px 150px;
     grid-template-rows: 100px;
     justify-content: space-around;
-    align-content: space-around;
+    align-content: flex-start;
     grid-gap: 50px;
     border-radius: 15px;
 }
@@ -95,4 +95,15 @@ img {
     list-style: none;
     cursor: pointer;
     top: 10px;
+}
+#nav {
+    display: grid;
+    grid-template-columns: 100px 100px;
+    grid-template-rows: 20px;
+    justify-content: center;
+    align-content: center;
+    cursor: pointer;
+}
+#nav button{
+    cursor: pointer;
 }

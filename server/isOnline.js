@@ -1,12 +1,12 @@
-const isOnline = async(stats) => {
-
+const isOnline = async (stats) => {
+    var path = require('path')
     const fs = require("fs");
     let serverFileStr = require('./serverFileStr.json')
     const https = require('https');
     const notifier = require('node-notifier')
     const EventEmitter = require('events');
 
-    class MyEmitter extends EventEmitter {}
+    class MyEmitter extends EventEmitter { }
 
     const myEmitter = new MyEmitter();
     const { ipcMain } = require('electron')
@@ -14,7 +14,7 @@ const isOnline = async(stats) => {
         event.sender.send('fileStr', serverFileStr)
     })
     setInterval(() => {
-        require('dns').resolve('www.google.com', function(err) {
+        require('dns').resolve('www.google.com', function (err) {
             if (err) {
                 // console.log("No connection");
                 ipcMain.on('isOnline', (event, args) => {
@@ -24,9 +24,9 @@ const isOnline = async(stats) => {
             } else {
                 let status = true
                 ipcMain.on('isOnline', (event, args) => {
-                        event.sender.send('onlineStatus', status)
-                    })
-                    // console.log("Connected");
+                    event.sender.send('onlineStatus', status)
+                })
+                // console.log("Connected");
             }
         });
         ipcMain.removeAllListeners('isOnline')
@@ -34,15 +34,23 @@ const isOnline = async(stats) => {
     let strArr = Object.keys(serverFileStr)
     for (let dir = 0; dir < strArr.length; dir++) {
         try {
-            // console.log(strArr[dir])
-            if (fs.existsSync(`../${strArr[dir]}`) === false) {
-                let folder = strArr[dir].substring(strArr[dir].indexOf('/'), strArr[dir].lastIndexOf('/'))
-                fs.mkdir(`../${folder}`, { recursive: true }, err => {
+            let winPath = path.normalize(strArr[dir])
+            let fileToCheck = __dirname.substring(0, __dirname.lastIndexOf('\\')) + winPath
+            if (fs.existsSync(fileToCheck) === false) {
+                // console.log(fileToCheck, '111111111111111')
+                let folder = fileToCheck.substring(fileToCheck.indexOf('\\'), fileToCheck.lastIndexOf('\\'))
+                fs.mkdir(folder, { recursive: true }, err => {
                     if (err) console.log(err)
-                        // fs.writeFile(`.${dir}`, null, err => {
-                        //         if (err) console.log(err)
-                        //     })
-                    fs.closeSync(fs.openSync(`../${strArr[dir]}`, 'w'))
+                    // fs.writeFile(`.${dir}`, null, err => {
+                    //         if (err) console.log(err)
+                    //     })
+                    if (fileToCheck.substring(fileToCheck.lastIndexOf('\\')).includes('.')) {
+                        fs.closeSync(fs.openSync(fileToCheck, 'w'))
+                    } else {
+                        fs.mkdir(fileToCheck, { recursive: true }, err => {
+                            if (err) console.log(err)
+                        })
+                    }
                 })
             } else {
                 // fs.writeFile(`.${dir}`, null, err => {

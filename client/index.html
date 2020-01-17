@@ -6,8 +6,13 @@
     <title>ZoomiaApp</title>
     <link rel="stylesheet" type="text/css" href="mystyle.css">
     <script>
-        let rightClickPosition = null
-        class MyEmitter extends window.EventEmitter {}
+        // let nav = document.createElement('div')
+        // let forwButton = document.createElement('button')
+        // let backButton = document.createElement('button')
+        // nav.appendChild(backButton)
+        // nav.
+        // document.getElementById('files')
+        class MyEmitter extends window.EventEmitter { }
         const myEmitter = new MyEmitter();
         const menu = new window.remote.Menu
         const menuItem = new window.remote.MenuItem({
@@ -24,73 +29,82 @@
         })
         menu.append(menuItem)
         menu.append(menuItem2)
-
-
         window.ipcRenderer.send('fileReq')
-        window.ipcRenderer.on('fileRep', (event, files) => {
-            // console.log(files)
-
-            for (let i = 0; i < files.length; i++) {
-                let div = document.createElement('div')
-                div.classList.add('container')
-                let img = document.createElement('img')
-                div.innerText = files[i]
-                div.addEventListener('dblclick', (e) => {
-                    if (e.toElement.textContent) {
-                        let reqFile = e.toElement.textContent
-                        window.ipcRenderer.send('reqFile', e.toElement.textContent)
-                        console.log(e.toElement.textContent)
+        window.ipcRenderer.on('fileRep', (event, files)=>{
+            console.log(files,'1111111111111')
+            function createDom(files) {
+                for (let i = 0; i < files.length; i++) {
+                    let div = document.createElement('div')
+                    div.classList.add('container')
+                    let img = document.createElement('img')
+                    div.innerText = files[i]
+                    if (files[i].includes('.')) {
+                        div.classList.add('file')
                     } else {
-                        let reqFile = e.toElement.textContent
-                        window.ipcRenderer.send('reqFile', e.toElement.parentNode.textContent)
-                        console.log(e.toElement.parentNode.textContent)
+                        div.classList.add('folder')
                     }
-                })
-                div.addEventListener('contextmenu', (e) => {
-                    e.preventDefault()
-                    let textCont = e.toElement.textContent ? e.toElement.textContent : e.toElement.parentNode.textContent
-                    myEmitter.once('showInFolder', () => {
-                        console.log(e, '987654321')
-                        window.ipcRenderer.send('context', [textCont, 'showInFolder'])
+                    div.addEventListener('dblclick', (e) => {
+                        let elementToOpen = e.toElement.tagName === 'IMG' ? e.toElement.parentNode : e.toElement
+                        let textCont = e.toElement.textContent ? e.toElement.textContent : e.toElement.parentNode.textContent
+                        if (elementToOpen.classList.contains('file')) {
+                            window.ipcRenderer.send('reqFile', textCont)
+                            console.log(textCont)
+                        } else {
+                            window.ipcRenderer.send('openFolder', textCont)
+                            console.log(textCont)
+                        }
                     })
-                    myEmitter.once('delete', () => {
-                        console.log(e, '***************')
-                        window.ipcRenderer.send('context', [textCont, 'delete'])
-                    })
-                    menu.popup(remote.getCurrentWindow())
-                }, false)
-                document.getElementById('files').appendChild(div)
-                if (files[i].substring(files[i].lastIndexOf('.') + 1) === 'jpg' || files[i].substring(files[i].lastIndexOf('.') + 1) === 'png' || files[i].substring(files[i].lastIndexOf('.') + 1) === 'gif') {
-                    // console.log('image', files[i])
-                    img.src = '../assets/image.jpg'
-                } else if (files[i].substring(files[i].lastIndexOf('.') + 1) === 'mp4') {
-                    // console.log('video', files[i])
-                    img.src = '../assets/video.jpg'
-                } else if (files[i].substring(files[i].lastIndexOf('.') + 1) === 'zip') {
-                    // console.log('zip', files[i])
-                    img.src = '../assets/zip.jpg'
-                } else if (files[i].substring(files[i].lastIndexOf('.') + 1) === 'doc') {
-                    // console.log('zip', files[i])
-                    img.src = '../assets/word.jpg'
-                } else if (files[i].substring(files[i].lastIndexOf('.') + 1) === 'xml') {
-                    // console.log('zip', files[i])
-                    img.src = '../assets/exel.jpg'
-                } else {
-                    img.src = '../assets/file.jpg'
+                    div.addEventListener('contextmenu', (e) => {
+                        e.preventDefault()
+                        let textCont = e.toElement.textContent ? e.toElement.textContent : e.toElement.parentNode.textContent
+                        myEmitter.once('showInFolder', () => {
+                            console.log(e, '987654321')
+                            window.ipcRenderer.send('context', [textCont, 'showInFolder'])
+                        })
+                        myEmitter.once('delete', () => {
+                            console.log(e, '***************')
+                            let elementToDelete = e.toElement.tagName === 'IMG' ? e.toElement.parentNode : e.toElement
+                            elementToDelete.remove()
+                            window.ipcRenderer.send('context', [textCont, 'delete'])
+                        })
+                        menu.popup(remote.getCurrentWindow())
+                    }, false)
+                    document.getElementById('files').appendChild(div)
+                    let ext = files[i].substring(files[i].lastIndexOf('.') + 1)
+                    if (files[i].includes('.')) {
+                        img.src = `../assets/${ext}.png`
+                    } else {
+                        img.src = `../assets/folder.jpg`
+                    }
+                    div.appendChild(img)
                 }
-                div.appendChild(img)
             }
+            createDom(files)
         })
     </script>
 </head>
 
 <body id='body'>
+    <!-- <div id="nav">
+        <button id="backward">backward</button>
+        <button id="forward">forward</button>
+    </div> -->
     <div id="files">
     </div>
     <script>
+        // let backward = document.getElementById('backward')
+        // backward.addEventListener('click', e=>{
+        //     console.log(window.ipcRenderer)
+        //     window.ipcRenderer.send('backward')
+        // })
+        // let forward = document.getElementById('forward')
+        // forward.addEventListener('click', e=>{
+        //     console.log(window.ipcRenderer)
+        //     window.ipcRenderer.send('forward')
+        // })
         setInterval(() => {
             window.ipcRenderer.send('isOnline')
-        }, 1000)
+        }, 500)
         window.ipcRenderer.on('onlineStatus', (event, isOnline) => {
             if (isOnline) {
                 document.getElementById('body').classList.add('online')
