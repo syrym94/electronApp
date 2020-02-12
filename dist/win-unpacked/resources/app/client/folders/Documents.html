@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Folder</title>
+    <link rel="stylesheet" type="text/css" href="../folder.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body id='body'>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <div id="nav">
+        <button id="backward" class="btn btn-dark">Назад</button>
+    </div>
+    <div id="files">
+
+    </div>
+    <script>
+        class MyEmitter extends window.EventEmitter { }
+        const myEmitter = new MyEmitter();
+        const menu = new window.remote.Menu
+        const menuItem = new window.remote.MenuItem({
+            label: 'ShowInFolder',
+            click: () => {
+                myEmitter.emit('showInFolder')
+            }
+        })
+        const menuItem2 = new window.remote.MenuItem({
+            label: 'Delete',
+            click: () => {
+                myEmitter.emit('delete')
+            }
+        })
+        menu.append(menuItem)
+        menu.append(menuItem2)
+        let files = ["testFolder"]
+       console.log(files, '4444444444')
+        function createDom(files) {
+            for (let i = 0; i < files.length; i++) {
+                let div = document.createElement('div')
+                div.classList.add('container')
+                let img = document.createElement('img')
+                div.innerText = files[i]
+                if (files[i].includes('.')) {
+                    div.classList.add('file')
+                } else {
+                    div.classList.add('folder')
+                }
+                div.addEventListener('mouseover', e => {
+                    div.classList.add('shadow')
+                    div.classList.add('rounded')
+                })
+                div.addEventListener('mouseout', e => {
+                    div.classList.remove('shadow')
+                    div.classList.remove('rounded')
+                })
+                div.addEventListener('dblclick', (e) => {
+                    let elementToOpen = e.toElement.tagName === 'IMG' ? e.toElement.parentNode : e.toElement
+                    let textCont = e.toElement.textContent ? e.toElement.textContent : e.toElement.parentNode.textContent
+                    if (elementToOpen.classList.contains('file')) {
+                        window.ipcRenderer.send('reqFile', textCont)
+                        console.log(textCont)
+                    } else {
+                        window.ipcRenderer.send('openFolder', textCont)
+                        console.log(textCont)
+                    }
+                })
+                div.addEventListener('contextmenu', (e) => {
+                    e.preventDefault()
+                    let textCont = e.toElement.textContent ? e.toElement.textContent : e.toElement.parentNode.textContent
+                    myEmitter.once('showInFolder', () => {
+                        console.log(e, '987654321')
+                        window.ipcRenderer.send('context', [textCont, 'showInFolder'])
+                    })
+                    myEmitter.once('delete', () => {
+                        console.log(e, '***************')
+                        let elementToDelete = e.toElement.tagName === 'IMG' ? e.toElement.parentNode : e.toElement
+                        elementToDelete.remove()
+                        window.ipcRenderer.send('context', [textCont, 'delete'])
+                    })
+                    menu.popup(remote.getCurrentWindow())
+                }, false)
+                document.getElementById('files').appendChild(div)
+                let ext = files[i].substring(files[i].lastIndexOf('.') + 1)
+                if (files[i].includes('.')) {
+                    if (window.fs.existsSync(`../../assets/${ext}.png`)) {
+                        img.src = `../../assets/${ext}.png`
+                    } else {
+                        img.src = `../../assets/dat.png`
+                    }
+                } else {
+                    img.src = `../../assets/folder.jpg`
+                }
+                div.appendChild(img)
+            }
+        }
+        createDom(files)
+        let backward = document.getElementById('backward')
+        backward.addEventListener('click', e => {
+            console.log(window.ipcRenderer)
+            window.ipcRenderer.send('backward')
+        })
+        setInterval(() => {
+            window.ipcRenderer.send('isOnline')
+        }, 500)
+        window.ipcRenderer.on('onlineStatus', (event, isOnline) => {
+            if (isOnline) {
+                document.getElementById('body').classList.add('bg-success')
+                document.getElementById('body').classList.remove('bg-danger')
+            } else {
+                document.getElementById('body').classList.add('bg-danger')
+                document.getElementById('body').classList.remove('bg-success')
+            }
+        })
+        document.getElementById('body').addEventListener('dragenter', e => {
+            e.preventDefault()
+            console.log('drag entered')
+            return false
+        })
+        document.getElementById('body').addEventListener('dragover', e => {
+            e.preventDefault()
+            console.log('dragover')
+            return false
+        })
+        document.getElementById('body').addEventListener('dragleave', e => {
+            e.preventDefault()
+            console.log('dragleave')
+            return false
+        })
+        document.getElementById('body').addEventListener("drop", (e) => {
+            e.preventDefault();
+            console.log("dropped")
+            for (let f of e.dataTransfer.files) {
+                window.ipcRenderer.send('itemAdd', f.path)
+                console.log(f.path.substring(f.path.lastIndexOf('\\') + 1))
+                let name = f.path.substring(f.path.lastIndexOf('\\') + 1)
+                createDom([name])
+            }
+            return false
+        });
+
+    </script>
+</body>
+
+</html>

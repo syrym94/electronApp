@@ -1,0 +1,6 @@
+directories:
+  output: dist
+  buildResources: build
+appId: ZoomiaApp
+electronVersion: 8.0.0
+asar: false
