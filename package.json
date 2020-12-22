@@ -19,7 +19,7 @@
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15",
     "node-gyp": "^6.1.0",
-    "node-notifier": "^6.0.0",
+    "node-notifier": "^8.0.1",
     "rebuild": "^0.1.2"
   }
 }
