@@ -17,7 +17,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "fs-extra": "^8.1.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "node-gyp": "^6.1.0",
     "node-notifier": "^6.0.0",
     "rebuild": "^0.1.2"
